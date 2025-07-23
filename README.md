@@ -133,10 +133,10 @@ To overcome the need to modify complex SQL queries for simple display logic, I a
     **The Result:**
     *   **Reduced query response time by 93%, down to under 5 seconds.**
 
-    **The Mechanism:**
-    1.  **Instant Load from Cache:** Upon opening a screen, data is immediately displayed from the local cache (`GetStorage`).
-    2.  **Incremental Background Fetch:** In the background, the application fetches data from the database in chunks (5000 rows at a time) and updates the cache.
-    3.  **Smart Invalidation System:** To solve cache coherency issues, I built a smart relationship system that connects the caches. When a client's name is updated, for instance, the system identifies only the screens displaying that name and selectively invalidates their specific caches, instead of rebuilding everything.
+**The Mechanism:**
+1.  **Instant Load from Cache:** Upon opening a screen, data is immediately displayed from the local cache (`GetStorage`).
+2.  **Incremental Background Fetch:** In the background, the application fetches data from the database in chunks (5000 rows at a time) and updates the cache.
+3.  **Smart Invalidation System:** To solve cache coherency issues, I built a smart relationship system that connects the caches. When a client's name is updated, for instance, the system identifies only the screens displaying that name and selectively invalidates their specific caches, instead of rebuilding everything.
 
     ![Big Data Performance Test](assets/big_data_test.gif)
 
@@ -147,10 +147,10 @@ To overcome the need to modify complex SQL queries for simple display logic, I a
 *   **The Challenge:** In a multi-user environment, how can we ensure data is instantly updated across all connected devices without overwhelming the server?
 *   **💡 The Engineering Solution:** I designed a scalable real-time synchronization infrastructure using a database-level notification layer.
 
-    **The Mechanism:**
-    1.  **Event Logging:** When any operation (create, update, delete) occurs, a "notification" is logged in a dedicated database table, describing the operation type and affected data.
-    2.  **Notification Broadcast:** Other connected clients are constantly listening for these notifications.
-    3.  **Smart Update:** Upon receiving a notification, each client triggers its smart update mechanism (leveraging the internal relationship system) to precisely update its local cache or fetch only the new records if it's an addition.
+**The Mechanism:**
+1.  **Event Logging:** When any operation (create, update, delete) occurs, a "notification" is logged in a dedicated database table, describing the operation type and affected data.
+2.  **Notification Broadcast:** Other connected clients are constantly listening for these notifications.
+3.  **Smart Update:** Upon receiving a notification, each client triggers its smart update mechanism (leveraging the internal relationship system) to precisely update its local cache or fetch only the new records if it's an addition.
     
     **The Result:**
     *   A full synchronization process takes only **1 to 3 seconds**.
